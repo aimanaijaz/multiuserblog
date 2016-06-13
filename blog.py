@@ -231,7 +231,7 @@ class Logout(BlogHandler):
     def get(self):
         self.logout()
         self.redirect('/')
-#Main page of the blog where all posts are displayed      
+# Main page of the blog where all posts are displayed      
 class MainPage(BlogHandler):
     def get(self):
         # Displays the latest posts
@@ -265,6 +265,9 @@ class PostPage(BlogHandler):
             self.render("publicpermalink.html", **params)
 
     def post(self,post_id):
+        # Authentication
+        if not self.user:
+            self.redirect('/login')
         # Obtain id from the textbox
         self.id = self.request.get('id')
         params = dict(id = self.id)
@@ -323,19 +326,33 @@ class EditPost(BlogHandler):
                 self.render('editpost.html', **params)                     
 
     def post(self):
-        # Obtain id from the textbox
-        self.id = self.request.get('id')
-        pkey = db.Key.from_path('Post', int(self.id), parent=blog_key())
-        post = db.get(pkey)
-        # Get subject and content
-        self.subject = self.request.get('subject')
-        self.content = self.request.get('content')
-        params = dict(subject = self.subject, content = self.content, id = self.id)
-        # Sets the subject the content and pushes the edited post to the datastore
-        post.subject = self.subject
-        post.content = self.content
-        post.put()
-        self.redirect('/blog/%s' %self.id)
+        post_id = self.request.get('id')
+        # Authentication
+        if not self.user:
+            self.redirect('/login')
+        else:
+            pkey = db.Key.from_path('Post', int(post_id), parent=blog_key())
+            post = db.get(pkey)
+            # Check if the user is the author of the post
+            # Authorization
+            if self.user.name != post.author:
+                self.redirect('/blog/%s' % post_id)
+            else:
+                # Obtain id from the textbox
+                self.id = self.request.get('id')
+                pkey = db.Key.from_path('Post', int(self.id), parent=blog_key())
+                post = db.get(pkey)
+                # Get subject and content
+                self.subject = self.request.get('subject')
+                self.content = self.request.get('content')
+                params = dict(subject = self.subject, content = self.content, id = self.id)
+                # Sets the subject the content and pushes the edited post to the datastore
+                post.subject = self.subject
+                post.content = self.content
+                post.put()
+                self.redirect('/blog/%s' %self.id)
+        
+       
 
 class DeletePost(BlogHandler):
     def get(self):
@@ -358,13 +375,27 @@ class DeletePost(BlogHandler):
                 self.render('deletepost.html', **params)          
 
     def post(self):
-        # Obtain id from the textbox
-        self.id = self.request.get('id')
-        pkey = db.Key.from_path('Post', int(self.id), parent=blog_key())
-        post = db.get(pkey)
-        # delete from datastore
-        post.delete()
-        self.redirect('/')
+        p_id = self.request.get('id')
+        # Authentication
+        if not self.user:
+            self.redirect('/login')
+        else:
+            pkey = db.Key.from_path('Post', int(p_id), parent=blog_key())
+            post = db.get(pkey)
+            # Check if the user is the author of the post
+            # Authorization
+            if self.user.name != post.author:
+                self.redirect('/blog/%s' % p_id)
+            else:
+               # Obtain id from the textbox
+               self.id = self.request.get('id')
+               pkey = db.Key.from_path('Post', int(self.id), parent=blog_key())
+               post = db.get(pkey)
+               # delete from datastore
+               post.delete()
+               self.redirect('/')
+
+   
             
 class EditComment(BlogHandler):
     def get(self):
@@ -388,16 +419,32 @@ class EditComment(BlogHandler):
             else:
                 self.redirect('/blog/%s' % post.key().id())
     def post(self):
-        #Obtain id from textbox
-        self.id = self.request.get('id')
-        ckey = db.Key.from_path('Comment', int(self.id), parent=comment_key())
-        comm = db.get(ckey)
-        # Obtain new comment from textarea
-        self.comm = self.request.get('comment')
-        #Edit the comment and push it to the datastore
-        comm.comment = self.comm
-        comm.put()
-        self.redirect('/blog/%s' % comm.post)
+        c_id = self.request.get('id')
+        # Authentication
+        if not self.user:
+            self.redirect('/login')
+        else:
+            ckey = db.Key.from_path('Comment', int(c_id), parent=comment_key())
+            comm = db.get(ckey)
+            params = dict(id = int(c_id), comment = comm)
+            # Check if the user is the author of the comment
+            # Authorization
+            if self.user.name == comm.author:
+                #Obtain id from textbox
+                self.id = self.request.get('id')
+                ckey = db.Key.from_path('Comment', int(self.id), parent=comment_key())
+                comm = db.get(ckey)
+                # Obtain new comment from textarea
+                self.comm = self.request.get('comment')
+                #Edit the comment and push it to the datastore
+                comm.comment = self.comm
+                comm.put()
+                self.redirect('/blog/%s' % comm.post)
+            elif not comm:
+                self.error(404)
+                return
+            else:
+                self.redirect('/blog/%s' % post.key().id())
 
 class DeleteComment(BlogHandler):
     def get(self):
@@ -421,17 +468,33 @@ class DeleteComment(BlogHandler):
             else:
                 self.redirect('/blog/%s' % post.key().id())       
     def post(self):
-        # Obtain id from textbox
-        self.id = self.request.get('id')
-        ckey = db.Key.from_path('Comment', int(self.id), parent=comment_key())
-        comm = db.get(ckey)
-        pkey = db.Key.from_path('Post', int(comm.post), parent=blog_key())
-        post = db.get(pkey)
-        #Delete comment and decrement from datastore
-        comm.delete()
-        post.comments = post.comments - 1
-        post.put()
-        self.redirect('/blog/%s' % post.key().id())
+       c_id = self.request.get('id')
+       # Authetnication
+       if not self.user:
+           self.redirect('/login')
+       else:
+           ckey = db.Key.from_path('Comment', int(c_id), parent=comment_key())
+           comm = db.get(ckey)
+           params = dict(id = int(c_id), comment = comm)
+           # Check if user is the author of the comment
+           # Authorization
+           if self.user.name == comm.author:
+               # Obtain id from textbox
+               self.id = self.request.get('id')
+               ckey = db.Key.from_path('Comment', int(self.id), parent=comment_key())
+               comm = db.get(ckey)
+               pkey = db.Key.from_path('Post', int(comm.post), parent=blog_key())
+               post = db.get(pkey)
+               #Delete comment and decrement from datastore
+               comm.delete()
+               post.comments = post.comments - 1
+               post.put()
+               self.redirect('/blog/%s' % post.key().id())
+           elif not comm:
+               self.error(404)
+               return
+           else:
+               self.redirect('/blog/%s' % post.key().id())
 
 class LikeButton(BlogHandler):
     def get(self):

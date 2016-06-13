@@ -1,0 +1,29 @@
+{% extends "header.html" %}
+  {% block content %}
+    <form class= "loginform" method="post">
+      <header class="loginheader">Signup</header>
+        <label class ="loginlabel"> Username </label>
+        <input class="logininput" type="text" name="username" value="{{username}}">
+      <div class="error">
+        {{error_username}}
+      </div>
+        <label class="loginlabel" > Password </label>
+        <input class="logininput" type="password" name="password" value="">
+      <div class="error">
+        {{error_password}}
+      </div>
+        <label class="loginlabel" >Verify Password </label>
+        <input class="logininput" type="password" name="verify" value="">
+      <div class="error">
+        {{error_verify}}
+      </div>
+          <label class="loginlabel" > Email (optional) </label>
+          <input class="logininput" type="text" name="email" value="{{email}}">
+      <div class="error">
+        {{error_email}}
+      </div>
+      <button class="loginbutton" type="submit">Submit</button>
+      <br>
+      <a class="signup" href="/login"> Already registered? Login </a>
+    </form>
+  {% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+  <h2>Edit Post: {{ post.subject }}</h2>
+    <form method="post">
+      <div>
+        <label for="subject">Subject:</label>
+        <input type="hidden" name="id" value="{{ id }}">
+        <input class="textbox" type="text" name="subject" placeholder="Subject" value="{{post.subject}}">
+      </div>
+      <div>
+        <label for="content">Content:</label>
+        <textarea class="textarea" name="content">{{post.content}}</textarea>
+      </div>
+      {% if error %}
+      <div>
+        <strong>{{error}}</strong>
+      </div>
+      {% endif %}
+      <div>
+        <button type="submit"> Edit Post </button> &nbsp&nbsp
+        <a href = "/blog/{{post.key().id()}}"> Cancel </a>
+      </div>       
+    </form>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2 >Are you sure you want to delete {{ post.subject }} ?</h2>
+    <form method="post">
+      <div>
+        <label hidden for="subject">Subject:</label>
+        <input type="hidden" name="id" value="{{ id }}">
+        <input class="textbox" type="hidden" name="subject" placeholder="{{ post.subject }}" disabled>
+      </div>
+      <div>
+        <label for="subject">Blog</label>
+        <textarea class="textarea" name="blog" placeholder="{{ post.content }}" disabled></textarea>
+      </div>
+      <div>
+        <button type="submit"> Delete </button> &nbsp&nbsp
+        <a href = "/blog/{{post.key().id()}}"> Cancel </a>
+      </div>
+    </form>
+{% endblock %}

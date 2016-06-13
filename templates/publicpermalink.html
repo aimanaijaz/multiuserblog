@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+  {% block content %}
+    {{post.render() | safe}}
+      <br>
+      <div>
+        <a href="/login">Edit</a>
+        <a href="/login">Delete</a>  
+        <a href="/login">Comment</a>  
+        <br> 
+        <br>{{ post.likes }} Likes
+      </div>
+
+    {% if comments %}
+      <h3> Comments </h3>
+      <hr>
+      {% for comment in comments %}
+        <div class="title"> 
+          {{comment.author}} 
+        </div> 
+        <div class ="subtitle"> 
+          {{comment.created.strftime("%b %d %Y at %I:%M %p")}}
+        </div>
+        <br>
+        <div>
+          <em>{{comment.comment}}</em>
+        </div>
+        <br>
+        <hr>
+      {% endfor %}
+    {% else %}
+      <div>
+        <br>
+        <em>Be the first one to <a href="/login">comment</a> on this post.</em>
+      </div>
+    {% endif %}
+
+  {% endblock %}
+   

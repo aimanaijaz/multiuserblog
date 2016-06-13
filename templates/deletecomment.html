@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Are you sure you want to delete the following comment?</h2>
+    <form method="post">
+      <div>
+        <label class="label" for="post">Post</label>
+        <input type="hidden" name="id" value="{{ id }}">
+        <input type="text" class="textbox" name="post" placeholder="{{ post.subject }}" disabled>
+      </div>
+      <br>
+      <div>
+        <label for="comment" class="label">Comment</label>
+        <textarea class="form-control" name="comment" placeholder="{{ comment.comment }}" disabled></textarea>
+      </div>
+      <br>
+      <div>
+        <button type="submit"> Delete </button> &nbsp&nbsp
+        <a href = "/blog/{{post.key().id()}}"> Cancel </a>
+      </div>
+    </form>
+{% endblock %}

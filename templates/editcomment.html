@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Edit Comment</h2>
+    <form method="post">
+      <div>
+        <label class = "label" for="post">Post</label>
+        <input type="hidden" name="id" value="{{ id }}">
+        <input type="text" class="textbox" name="post" placeholder="{{ post.subject }}" disabled>
+      </div>
+      <br>
+      <div>
+        <label class="label" for="comment">Comment</label>
+        <textarea name="comment">{{ comment.comment }}</textarea>
+      </div>
+      <br>
+      {% if error %}
+        <div>
+          <strong>{{error}}</strong>
+        </div>
+      {% endif %}
+        <div>
+          <button type="submit"> Edit Comment </button> &nbsp&nbsp
+          <a href = "/blog/{{post.key().id()}}"> Cancel </a>
+        </div>  
+    </form>
+{% endblock %}

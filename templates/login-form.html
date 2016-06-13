@@ -1,0 +1,19 @@
+{% extends "header.html" %}
+  
+  {% block content %}
+    <form class="loginform" method="post">
+        <header class="loginheader">Login</header>
+        <label class ="loginlabel"> Username </label>
+        <input class="logininput" type="text" name="username" value="{{username}}">
+        <label class="loginlabel"> Password </label>
+        <input class="logininput" type="password" name="password" value="">
+        <br>
+      <div class="error">
+        {{error}}
+      </div>
+      <button class="loginbutton" type="submit">Submit</button>
+      <br>
+      <a class="signup" href="/signup"> New User? Sign up for our blog </a>
+    </form>
+  {% endblock %}
+

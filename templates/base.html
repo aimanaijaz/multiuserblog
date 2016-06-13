@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial scale=1">
+  <title>CS 253 Blog</title>
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Tangerine">
+  <link rel="stylesheet" href="static/bootstrap.min.css">
+  <link type="text/css" rel="stylesheet" href="/static/main.css" />
+</head>
+
+<body>
+  <div class="main-title border">
+    FullStack Nanodegree Blog
+  </div>
+
+  <div class="login-area">
+    {% if user %}
+      {{user.name}} (<a class="login-link" href="/logout">logout</a>)
+    {% else %}
+      <a class="login-link" href="/login">login</a>
+      |
+      <a class="login-link" href="/signup">signup</a>
+    {% endif %}
+  </div>
+
+  <div>
+    <a class="text-left" href="/"> Home </a>
+    <a class="text-center" href="/blog/newpost"> Add New Post </a>
+    {% if user %}
+      <h2> Welcome {{user.name}} </h2>
+    {% endif %}
+  </div>
+
+  <div id="content">
+  {% block content %}
+  {% endblock %}
+  </div>
+</body>
+
+</html>
+

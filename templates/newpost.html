@@ -1,18 +1,18 @@
-{% extends "base.html" %}
+{% extends "header.html" %}
 
 {% block content %}
-  <h2>Create a new post here</h2>
-
+  <h3>Create a new post here</h3>
+  
     <form method="post">
-      <label>
-        <div>Subject:</div>
+      <div>
+        <label for="post">Subject:</label>
         <input class="textbox" type="text" name="subject" value="{{subject}}">
-      </label>
+      </div>
 
-      <label>
-        <div>Blog:</div>
+      <div>
+        <label for="post">Blog:</label>
         <textarea class="textarea" name="content">{{content}}</textarea>
-      </label>
+      </div>
 
       <div class="error">{{error}}</div>
       <br>

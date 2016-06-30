@@ -12,31 +12,17 @@
 <body>
   <div class="container">
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-12">
         <ul>
           <li> <a class="text-left" href="/"> Home </a> </li>
-          <li> <a class="text-center" href="/blog/newpost"> Add New Post </a> </li>
         </ul>
       </div>
-      <div class="col-md-8 text-right">
-        {% if user %}
-          {{user.name}} (<a class="login-link" href="/logout">logout</a>)
-        {% else %}
-          <a class="login-link" href="/login">Login</a>
-          |
-          <a class="login-link" href="/signup">Signup</a>
-        {% endif %}
-      </div>
-    </div>
-    <div class="row">
-      <hr>
-    </div>
     <div class="row">
       <div class="col-md-12">
-        <img class="img-responsive" src="/static/mainpic5.jpg" alt="Nature">
+        <hr>
       </div>
     </div>
-    <div class="row">
+    <div class="row align">
       <div class= "col-md-12" id="content">
         {% block content %}
         {% endblock %}

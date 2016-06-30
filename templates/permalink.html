@@ -1,11 +1,11 @@
-{% extends "base.html" %}
+{% extends "header.html" %}
 
 {% block content %}
   {{post.render() | safe}}
     <div>
       {% if user %}
         {% if user.name == post.author %}
-          <br><br>
+        <br>
           <a href="/editpost?id={{ post.key().id()}}">Edit</a>
           <a href="/deletepost?id={{ post.key().id()}}">Delete</a>     
         {% endif %}

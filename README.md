@@ -5,8 +5,9 @@ In this project I have made a simple multiuser blog.
 Users can sign up, login, read posts, comment on posts as well as like posts.   
 To run this application   
 Go to  http://nanodegree-blog.appspot.com/ to view the website   
-To run this project on your machine   
-1. Go to the following github repository link.   
+
+##To run this project on your machine   
+1. Go to the following github repository link - https://github.com/aimanaijaz/multiuserblog    
 2. Download the zip file, extract it and save it on your computer.   
 3. Download Google App Engine.   
 4. Open the Google App Engine Launcher.   

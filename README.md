@@ -3,7 +3,7 @@
 This project has been made as a part of the Full Stack Nanodegree program.   
 In this project I have made a simple multiuser blog.   
 Users can sign up, login, read posts, comment on posts as well as like posts.   
-To run this application   
+To run this application on the web
 Go to  http://nanodegree-blog.appspot.com/ to view the website   
 
 ##To run this project on your machine   
